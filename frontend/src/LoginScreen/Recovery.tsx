@@ -5,6 +5,7 @@ import LoginStyles from './LoginStyles';
 
 export default function Welcome({ navigation }: RecoveryProps) {
     const [email, setEmail] = useState('');
+
     return (
         <View style={LoginStyles.container}>
             <Text style={LoginStyles.title}>Recover Password</Text>

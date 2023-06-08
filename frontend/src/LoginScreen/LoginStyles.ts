@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 const LoginStyles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 40,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center'
@@ -12,10 +13,10 @@ const LoginStyles = StyleSheet.create({
         margin: 10,
         fontSize: 48,
         fontWeight: 'bold',
-        width: '80%'
+        width: '100%'
     },
     textInput: {
-        width: '80%',
+        width: '100%',
         borderColor: 'gray',
         borderWidth: 1,
         margin: 10,
@@ -28,11 +29,11 @@ const LoginStyles = StyleSheet.create({
         height: 30,
         marginBottom: 30,
         textAlign: 'right',
-        width: '80%'
+        width: '100%'
     },
     submitButton: {
         backgroundColor: '#425D50',
-        width: '80%',
+        width: '100%',
         margin: 10,
         paddingVertical: 10,
         borderRadius: 100,
