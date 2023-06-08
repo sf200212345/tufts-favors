@@ -5,6 +5,22 @@ import MessagesScreen from './MessagesScreen/MessagesScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
 import PublicFavorsScreen from './PublicFavorsScreen/PublicFavorsScreen';
 import GlobalStyles from './GlobalStyles';
-import { RootStackParamList, HomeProps, LoginProps } from './types';
+import { RootStackParamList, HomeProps, LoginProps, LoginStackParamList, SignUpProps, SignInProps, WelcomeProps, RecoveryProps } from './types';
 
-export { FavorHistoryScreen, HomeScreen, LoginScreen, MessagesScreen, ProfileScreen, PublicFavorsScreen, GlobalStyles, RootStackParamList, HomeProps, LoginProps };
+export {
+    FavorHistoryScreen,
+    HomeScreen,
+    LoginScreen,
+    MessagesScreen,
+    ProfileScreen,
+    PublicFavorsScreen,
+    GlobalStyles,
+    RootStackParamList,
+    HomeProps,
+    LoginProps,
+    LoginStackParamList,
+    SignUpProps,
+    SignInProps,
+    WelcomeProps,
+    RecoveryProps
+};
