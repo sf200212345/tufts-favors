@@ -1,4 +1,5 @@
 import { Button, Text, View, TextInput } from 'react-native';
+import { CheckBox } from 'react-native-elements';
 import { SignUpProps } from '../';
 import React, { useState } from 'react';
 import LoginStyles from './LoginStyles';
@@ -8,6 +9,7 @@ export default function SignUp({ navigation }: SignUpProps) {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
+    const [conditions, setConditions] = useState(false);
 
     return (
         <View style={LoginStyles.container}>
@@ -18,9 +20,15 @@ export default function SignUp({ navigation }: SignUpProps) {
             {password !== password2 ? <Text style={LoginStyles.redSmall}>Passwords do not match</Text> : <></>}
             <TextInput placeholder="Confirm Password" onChangeText={setPassword2} style={LoginStyles.textInput} />
             <View>
-                <Text onPress={() => console.log('lol')} style={[LoginStyles.forgotButton, LoginStyles.bold]}>
-                    Conditions stuff...
-                </Text>
+                <CheckBox
+                    title="By checking this box, you agree to the Terms and Conditions"
+                    checked={conditions}
+                    onPress={() => setConditions(!conditions)}
+                    containerStyle={{ backgroundColor: 'transparent', borderWidth: 0 }}
+                    // These styles are still not quite right but decent enough for now
+                    checkedColor="gray"
+                    checkedIcon="check-square-o"
+                />
             </View>
             <Text onPress={handleSubmit} style={LoginStyles.submitButton}>
                 Submit
