@@ -14,6 +14,10 @@ Replicate the development environment using `npm install` on a cli.
 
 -   See more here: https://stackoverflow.com/questions/8367031/how-do-i-install-package-json-dependencies-in-the-current-directory-using-npm
 
+Since we are using Expo, I believe you also need to run the following to ensure the right library is installed:
+
+`npx expo install react-native-screens react-native-safe-area-context`
+
 We're using Expo to handle distribution, you can develop with Expo by using `npx expo start --tunnel` and use the Expo Go app on your phone to scan the QR code that opens
 
 -   Your phone must be on the same network that your computer is on
