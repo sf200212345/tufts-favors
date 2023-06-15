@@ -1,26 +1,36 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 // defining custom type to validate props passed into screens
-type RootStackParamList = {
+type TabsParamList = {
     Home: undefined; // undefined means no props are passed in
-    Login: undefined;
-    Signup: undefined;
+    // this needs to be removed eventually when authentication is set up
+    Login: undefined | { signIn: () => void };
 };
 
-// can't find a way to define a generic type
-type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
-type LoginProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
+// <TabsParamList, "something", "something" in the form of Tab params type, specific parameter, id of navigator
+type HomeProps = BottomTabScreenProps<TabsParamList, 'Home', 'Tabs'>;
+type LoginProps = BottomTabScreenProps<TabsParamList, 'Login', 'Tabs'>;
 
 type LoginStackParamList = {
-    SignUp: undefined;
-    SignIn: undefined;
+    SignUp: undefined | { signIn: () => void };
+    SignIn: undefined | { signIn: () => void };
     Welcome: undefined;
     Recovery: undefined;
 };
 
-type SignUpProps = NativeStackScreenProps<LoginStackParamList, 'SignUp'>;
-type SignInProps = NativeStackScreenProps<LoginStackParamList, 'SignIn'>;
-type WelcomeProps = NativeStackScreenProps<LoginStackParamList, 'Welcome'>;
-type RecoveryProps = NativeStackScreenProps<LoginStackParamList, 'Recovery'>;
+type SignUpProps = NativeStackScreenProps<LoginStackParamList, 'SignUp', 'Login'>;
+type SignInProps = NativeStackScreenProps<LoginStackParamList, 'SignIn', 'Login'>;
+type WelcomeProps = NativeStackScreenProps<LoginStackParamList, 'Welcome', 'Login'>;
+type RecoveryProps = NativeStackScreenProps<LoginStackParamList, 'Recovery', 'Login'>;
 
-export { RootStackParamList, HomeProps, LoginProps, LoginStackParamList, SignUpProps, SignInProps, WelcomeProps, RecoveryProps };
+export type {
+    TabsParamList,
+    HomeProps,
+    LoginProps,
+    LoginStackParamList,
+    SignUpProps,
+    SignInProps,
+    WelcomeProps,
+    RecoveryProps
+};

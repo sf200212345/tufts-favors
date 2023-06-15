@@ -9,7 +9,11 @@ export default function Welcome({ navigation }: RecoveryProps) {
     return (
         <View style={LoginStyles.container}>
             <Text style={LoginStyles.title}>Recover Password</Text>
-            <TextInput placeholder="Tufts Email" onChangeText={setEmail} style={LoginStyles.textInput} />
+            <TextInput
+                placeholder="Tufts Email"
+                onChangeText={setEmail}
+                style={LoginStyles.textInput}
+            />
             <Text onPress={() => console.log('lol')} style={LoginStyles.submitButton}>
                 Send Confirmation Email
             </Text>

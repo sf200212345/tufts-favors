@@ -5,7 +5,16 @@ import MessagesScreen from './MessagesScreen/MessagesScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
 import PublicFavorsScreen from './PublicFavorsScreen/PublicFavorsScreen';
 import GlobalStyles from './GlobalStyles';
-import { RootStackParamList, HomeProps, LoginProps, LoginStackParamList, SignUpProps, SignInProps, WelcomeProps, RecoveryProps } from './types';
+import type {
+    TabsParamList,
+    HomeProps,
+    LoginProps,
+    LoginStackParamList,
+    SignUpProps,
+    SignInProps,
+    WelcomeProps,
+    RecoveryProps
+} from './types';
 
 export {
     FavorHistoryScreen,
@@ -14,8 +23,10 @@ export {
     MessagesScreen,
     ProfileScreen,
     PublicFavorsScreen,
-    GlobalStyles,
-    RootStackParamList,
+    GlobalStyles
+};
+export type {
+    TabsParamList,
     HomeProps,
     LoginProps,
     LoginStackParamList,
