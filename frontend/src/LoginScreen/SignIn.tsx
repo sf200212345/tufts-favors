@@ -1,6 +1,6 @@
 import { Text, View, TextInput, Alert } from 'react-native';
 import { SignInProps } from '../';
-import supabase from '../supabase';
+import { supabase } from '../GlobalHelpers';
 import React, { useState } from 'react';
 import LoginStyles from './LoginStyles';
 

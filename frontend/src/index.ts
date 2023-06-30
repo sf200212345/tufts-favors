@@ -1,3 +1,4 @@
+// add only screens and types here to prevent circular import
 import FavorHistoryScreen from './FavorHistoryScreen/FavorHistoryScreen';
 import HomeScreen from './HomeScreen/HomeScreen';
 import LoginScreen from './LoginScreen/LoginScreen';
@@ -5,7 +6,6 @@ import MessagesScreen from './MessagesScreen/MessagesScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
 import PublicFavorsScreen from './PublicFavorsScreen/PublicFavorsScreen';
 import TabBar from './TabBar';
-import GlobalStyles from './GlobalStyles';
 import type {
     TabsParamList,
     HomeProps,
@@ -24,8 +24,7 @@ export {
     MessagesScreen,
     ProfileScreen,
     PublicFavorsScreen,
-    TabBar,
-    GlobalStyles
+    TabBar
 };
 export type {
     TabsParamList,

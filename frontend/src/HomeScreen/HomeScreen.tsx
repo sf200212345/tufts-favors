@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 import React from 'react';
-import supabase from '../supabase';
+import { supabase } from '../GlobalHelpers';
 import HomeStyles from './HomeStyles';
 import { Button } from 'react-native-elements';
 
@@ -76,7 +76,7 @@ export default function HomeScreen() {
         );
     }
 
-    console.log(exampleFavors[0]);
+    //console.log(exampleFavors[0]);
 
     return (
         <View style={HomeStyles.container}>

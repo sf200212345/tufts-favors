@@ -2,9 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useState, useEffect } from 'react';
 import { Session } from '@supabase/supabase-js';
-import supabase from './src/supabase';
+import { supabase, GlobalSession } from './src/GlobalHelpers';
 import { HomeScreen, LoginScreen, ProfileScreen, TabBar } from './src';
-// enforcing types with type keyword
 import type { TabsParamList } from './src';
 
 // global to avoid re-rendering
@@ -23,25 +22,26 @@ export default function App() {
 
         // starts listening on auth state changes, like when a user signs in/out
         supabase.auth.onAuthStateChange((_event, session) => {
-            console.log('Current session from App.tsx: ');
-            console.log(session);
+            //console.log('Current session from App.tsx: ');
+            //console.log(session);
             setSession(session);
         });
     }, []);
 
-    // should pass session in as globally accessible value through react context or something
     return (
         <NavigationContainer>
             {session && session.user ? (
-                <Tabs.Navigator
-                    tabBar={(props) => <TabBar {...props} />}
-                    id="Tabs"
-                    screenOptions={{ headerShown: false }}
-                    initialRouteName="Home"
-                >
-                    <Tabs.Screen name="Home" component={HomeScreen} />
-                    <Tabs.Screen name="Profile" component={ProfileScreen} />
-                </Tabs.Navigator>
+                <GlobalSession.Provider value={session}>
+                    <Tabs.Navigator
+                        tabBar={(props) => <TabBar {...props} />}
+                        id="Tabs"
+                        screenOptions={{ headerShown: false }}
+                        initialRouteName="Home"
+                    >
+                        <Tabs.Screen name="Home" component={HomeScreen} />
+                        <Tabs.Screen name="Profile" component={ProfileScreen} />
+                    </Tabs.Navigator>
+                </GlobalSession.Provider>
             ) : (
                 <LoginScreen />
             )}

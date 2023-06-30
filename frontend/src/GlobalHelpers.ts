@@ -1,8 +1,9 @@
 // template code taken from https://supabase.com/docs/guides/getting-started/tutorials/with-expo#initialize-a-react-native-app
-// This is a config and initializer for the supabase client
+// This is a config and initializer for the supabase client and other global values
 import 'react-native-url-polyfill/auto';
 import * as SecureStore from 'expo-secure-store';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, Session } from '@supabase/supabase-js';
+import { createContext } from 'react';
 
 const ExpoSecureStoreAdapter = {
     getItem: (key: string) => {
@@ -29,6 +30,10 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
         detectSessionInUrl: false
     }
 });
+
+// session can be accessed using useContext hook
+const GlobalSession = createContext<Session | null>(null);
+
 /* making default function for all api calls
 async function getProfile({ session, setLoading, supabaseFunc, }) {
     try {
@@ -58,4 +63,4 @@ async function getProfile({ session, setLoading, supabaseFunc, }) {
     }
 }*/
 
-export default supabase;
+export { supabase, GlobalSession };

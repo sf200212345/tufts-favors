@@ -1,7 +1,7 @@
 import { Text, View, TextInput, Alert } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { SignUpProps } from '../';
-import supabase from '../supabase';
+import { supabase } from '../GlobalHelpers';
 import React, { useState, useLayoutEffect } from 'react';
 import LoginStyles from './LoginStyles';
 
