@@ -3,6 +3,8 @@ import { RecoveryProps } from '../';
 import React, { useState } from 'react';
 import LoginStyles from './LoginStyles';
 
+// TODO: Implement email recovery and add "go back" option
+
 export default function Welcome({ navigation }: RecoveryProps) {
     const [email, setEmail] = useState('');
 

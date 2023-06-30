@@ -8,7 +8,6 @@ import GlobalStyles from './GlobalStyles';
 import type {
     TabsParamList,
     HomeProps,
-    LoginProps,
     LoginStackParamList,
     SignUpProps,
     SignInProps,
@@ -28,7 +27,6 @@ export {
 export type {
     TabsParamList,
     HomeProps,
-    LoginProps,
     LoginStackParamList,
     SignUpProps,
     SignInProps,

@@ -1,15 +1,52 @@
-import { Button, Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput, Alert } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { SignUpProps } from '../';
-import React, { useState } from 'react';
+import supabase from '../supabase';
+import React, { useState, useLayoutEffect } from 'react';
 import LoginStyles from './LoginStyles';
 
-export default function SignUp({ navigation, route }: SignUpProps) {
+export default function SignUp({ navigation }: SignUpProps) {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
+    // TODO: should eventually record and send timestamp of conditions acceptance to prove that the user accepted
+    // TODO: need to have an extra page for confirming emails when that option is enabled in supabase
     const [conditions, setConditions] = useState(false);
+    // not working
+    //const [canSubmit, setCanSubmit] = useState(false);
+
+    async function signUpSupabase() {
+        // to prevent submitting multiple times unnecessarily
+        //setCanSubmit(false);
+        const { error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    full_name: name
+                }
+            }
+        });
+
+        if (error) Alert.alert(error.message);
+        //setCanSubmit(true);
+    }
+
+    // runs before rendering
+    /*useLayoutEffect(() => {
+        // check if all fields are valid
+        if (
+            email.endsWith('@tufts.edu') &&
+            !(name.trim().length === 0) &&
+            password === password2 &&
+            conditions
+        ) {
+            setCanSubmit(true);
+        } else {
+            setCanSubmit(false);
+        }
+    }, [email, name, password, password2, conditions]);*/
 
     return (
         <View style={LoginStyles.container}>
@@ -50,7 +87,7 @@ export default function SignUp({ navigation, route }: SignUpProps) {
                     checkedIcon="check-square-o"
                 />
             </View>
-            <Text onPress={handleSubmit} style={LoginStyles.submitButton}>
+            <Text onPress={signUpSupabase} style={LoginStyles.submitButton}>
                 Submit
             </Text>
             <View>
@@ -66,11 +103,4 @@ export default function SignUp({ navigation, route }: SignUpProps) {
             </View>
         </View>
     );
-
-    function handleSubmit() {
-        // Do something with email and password?
-        if (route.params?.signIn) {
-            route.params?.signIn();
-        }
-    }
 }

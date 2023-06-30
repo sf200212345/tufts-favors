@@ -1,11 +1,27 @@
-import { Button, Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput, Alert } from 'react-native';
 import { SignInProps } from '../';
+import supabase from '../supabase';
 import React, { useState } from 'react';
 import LoginStyles from './LoginStyles';
 
-export default function SignIn({ navigation, route }: SignInProps) {
+export default function SignIn({ navigation }: SignInProps) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    // to prevent submitting multiple times unnecessarily
+    // const [canSubmit, setCanSubmit] = useState(true); not currently working
+
+    async function signInSupabase() {
+        // setCanSubmit(false);
+        console.log('Submit button clicked');
+        const { error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        // TODO: should use this error if user credentials are wrong, prompt user as well
+        if (error) Alert.alert(error.message);
+        // setCanSubmit(true);
+    }
 
     return (
         <View style={LoginStyles.container}>
@@ -27,7 +43,7 @@ export default function SignIn({ navigation, route }: SignInProps) {
             >
                 Forgot Password?
             </Text>
-            <Text onPress={handleSubmit} style={LoginStyles.submitButton}>
+            <Text onPress={signInSupabase} style={LoginStyles.submitButton}>
                 Submit
             </Text>
             <View>
@@ -43,11 +59,4 @@ export default function SignIn({ navigation, route }: SignInProps) {
             </View>
         </View>
     );
-
-    function handleSubmit() {
-        // Do something with email and password?
-        if (route.params?.signIn) {
-            route.params?.signIn();
-        }
-    }
 }
