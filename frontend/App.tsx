@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useState, useEffect } from 'react';
 import { Session } from '@supabase/supabase-js';
 import supabase from './src/supabase';
-import { HomeScreen, LoginScreen } from './src';
+import { HomeScreen, LoginScreen, ProfileScreen, TabBar } from './src';
 // enforcing types with type keyword
 import type { TabsParamList } from './src';
 
@@ -34,11 +34,13 @@ export default function App() {
         <NavigationContainer>
             {session && session.user ? (
                 <Tabs.Navigator
+                    tabBar={(props) => <TabBar {...props} />}
                     id="Tabs"
                     screenOptions={{ headerShown: false }}
                     initialRouteName="Home"
                 >
                     <Tabs.Screen name="Home" component={HomeScreen} />
+                    <Tabs.Screen name="Profile" component={ProfileScreen} />
                 </Tabs.Navigator>
             ) : (
                 <LoginScreen />

@@ -29,5 +29,33 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
         detectSessionInUrl: false
     }
 });
+/* making default function for all api calls
+async function getProfile({ session, setLoading, supabaseFunc, }) {
+    try {
+        setLoading(true);
+        if (!session?.user) throw new Error('No user on the session!');
+
+        let { data, error, status } = await supabase
+            .from('profiles')
+            .select(`username, website, avatar_url`)
+            .eq('id', session?.user.id)
+            .single();
+        if (error && status !== 406) {
+            throw error;
+        }
+
+        if (data) {
+            setUsername(data.username);
+            setWebsite(data.website);
+            setAvatarUrl(data.avatar_url);
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            Alert.alert(error.message);
+        }
+    } finally {
+        setLoading(false);
+    }
+}*/
 
 export default supabase;

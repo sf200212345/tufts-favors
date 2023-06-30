@@ -4,12 +4,14 @@ import type { BottomTabScreenProps, BottomTabBarProps } from '@react-navigation/
 // defining custom type to validate props passed into screens
 type TabsParamList = {
     Home: undefined; // undefined means no props are passed in
+    Profile: undefined;
     // this needs to be removed eventually when authentication is set up
     // Login: undefined | { signIn: () => void };
 };
 
 // <TabsParamList, "something", "something" in the form of Tab params type, specific parameter, id of navigator
 type HomeProps = BottomTabScreenProps<TabsParamList, 'Home', 'Tabs'>;
+type TabProps = BottomTabBarProps;
 
 type LoginStackParamList = {
     SignUp: undefined;
@@ -26,6 +28,7 @@ type RecoveryProps = NativeStackScreenProps<LoginStackParamList, 'Recovery', 'Lo
 export type {
     TabsParamList,
     HomeProps,
+    TabProps,
     LoginStackParamList,
     SignUpProps,
     SignInProps,

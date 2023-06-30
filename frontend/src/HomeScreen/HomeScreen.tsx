@@ -70,8 +70,8 @@ export default function HomeScreen() {
     // For cleanliness, function for a single favor
     function Favor(favor: FavorProps) {
         return (
-            <View>
-                <Text key={favor.id}>{favor.title}</Text>
+            <View key={favor.id}>
+                <Text>{favor.title}</Text>
             </View>
         );
     }
