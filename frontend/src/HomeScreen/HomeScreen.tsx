@@ -1,8 +1,10 @@
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import React from 'react';
 import { supabase } from '../GlobalHelpers';
 import HomeStyles from './HomeStyles';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button } from 'react-native-elements';
+import moment from 'moment';
 
 // eventually move these to types.ts
 enum FavorType {
@@ -21,6 +23,25 @@ type FavorProps = {
     type: FavorType;
 };
 
+// Formats time properly
+moment.updateLocale('en', {
+  relativeTime: {
+    future: 'in %s',
+    past: '%s ago',
+    s: '%ds',
+    m: '%dm',
+    mm: '%dm',
+    h: '%dh',
+    hh: '%dh',
+    d: '%dd',
+    dd: '%dd',
+    M: '%dM',
+    MM: '%dM',
+    y: '%dy',
+    yy: '%dy',
+  },
+});
+
 export default function HomeScreen() {
     async function signOut() {
         console.log('Signing out');
@@ -35,7 +56,7 @@ export default function HomeScreen() {
             karma: 330,
             comments: ['Comment 1', 'Comment 2', 'Comment 3'],
             likes: 2,
-            time: new Date('2021-09-5T12:00:00Z'),
+            time: new Date('2023-07-3T12:00:00Z'),
             type: FavorType.FOOD
         },
         {
@@ -71,7 +92,43 @@ export default function HomeScreen() {
     function Favor(favor: FavorProps) {
         return (
             <View key={favor.id}>
-                <Text>{favor.title}</Text>
+                <View style={HomeStyles.favorContainer}>
+                    {/* Karma information */}
+                    <View style={HomeStyles.favorKarmaContainer}>
+                        {/* Not final icon but good for now */}
+                        <Icon name="arrow-up" size={30} color="#000" />
+                        <Text>{favor.karma}</Text>
+                    </View>
+
+                    {/* Favor information */}
+                    <View style={HomeStyles.favorInformationContainer}>
+
+                        {/* Favor title */}
+                        <Text style={HomeStyles.favorText}>{favor.title}</Text>
+                        
+                        <View style={HomeStyles.favorDetailsContainer}>
+                            {/* Timestapmp */}
+                            <View style={HomeStyles.favorTimestampContainer}>
+                                <Text style={HomeStyles.favorTimestampText}>
+                                    {moment(favor.time).fromNow()}
+                                </Text>
+                            </View>
+
+                            {/* Favor likes and comments */}
+                            <View style={HomeStyles.favorResponsesContainer}>
+                                {/* Again icons are easy enough to change later */}
+                                <View style={HomeStyles.favorResponseTypeContainer}>
+                                    <Icon name="comments" size={24} color="#000"  />
+                                    <Text style={HomeStyles.favorResponsesText}>{favor.comments.length}</Text>
+                                </View>
+                                <View style={HomeStyles.favorResponseTypeContainer}>
+                                    <Icon name="heart" size={24} color="#000"  />
+                                    <Text style={HomeStyles.favorResponsesText}>{favor.likes}</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
             </View>
         );
     }
@@ -83,7 +140,7 @@ export default function HomeScreen() {
             <Text>homeScreen</Text>
             {exampleFavors.map((favor) => Favor(favor))}
             {/* {Favor(exampleFavors[0])} */}
-            {/* Just here to allow you to go back to sign in, need to put this under profile later*/}
+            {/* Just here to allow you to go back to sign in, need to put this under profile later */}
             <Button onPress={signOut} title={'Sign Out'} />
         </View>
     );
