@@ -1,10 +1,13 @@
 // template code taken from https://supabase.com/docs/guides/getting-started/tutorials/with-expo#initialize-a-react-native-app
 // This is a config and initializer for the supabase client and other global values
 import 'react-native-url-polyfill/auto';
+import { Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { createClient, Session } from '@supabase/supabase-js';
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
+import { useSupabaseProps } from './';
 
+// needed by the supabase client to store the JWT auth token locally
 const ExpoSecureStoreAdapter = {
     getItem: (key: string) => {
         return SecureStore.getItemAsync(key);
@@ -34,33 +37,37 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 // session can be accessed using useContext hook
 const GlobalSession = createContext<Session | null>(null);
 
-/* making default function for all api calls
-async function getProfile({ session, setLoading, supabaseFunc, }) {
+// making default function for all api calls. The calling function must also be async.
+// setLoading is a state set in the calling function, use it to make a loading animation. Can have a value of null if not desired
+// supabaseFunc is the function of the form () => supabase.from('profiles').upsert(updates), for example
+async function useSupabase({ setLoading, supabaseFunc }: useSupabaseProps) {
+    const session = useContext(GlobalSession);
+    let returnData = null;
     try {
-        setLoading(true);
+        console.log('in useSupabase');
+        if (setLoading) {
+            setLoading(true);
+        }
+
         if (!session?.user) throw new Error('No user on the session!');
 
-        let { data, error, status } = await supabase
-            .from('profiles')
-            .select(`username, website, avatar_url`)
-            .eq('id', session?.user.id)
-            .single();
-        if (error && status !== 406) {
-            throw error;
-        }
+        console.log('Trying to get data');
+        let { data, error, status } = await supabaseFunc();
 
-        if (data) {
-            setUsername(data.username);
-            setWebsite(data.website);
-            setAvatarUrl(data.avatar_url);
-        }
+        if (error || status >= 300) throw error;
+        console.log('data received:');
+        console.log(data);
+        if (data) returnData = data;
     } catch (error) {
         if (error instanceof Error) {
             Alert.alert(error.message);
         }
     } finally {
-        setLoading(false);
+        if (setLoading) {
+            setLoading(false);
+        }
+        return returnData;
     }
-}*/
+}
 
-export { supabase, GlobalSession };
+export { supabase, GlobalSession, useSupabase };

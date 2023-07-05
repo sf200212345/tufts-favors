@@ -22,8 +22,6 @@ export default function App() {
 
         // starts listening on auth state changes, like when a user signs in/out
         supabase.auth.onAuthStateChange((_event, session) => {
-            //console.log('Current session from App.tsx: ');
-            //console.log(session);
             setSession(session);
         });
     }, []);

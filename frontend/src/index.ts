@@ -14,7 +14,8 @@ import type {
     SignUpProps,
     SignInProps,
     WelcomeProps,
-    RecoveryProps
+    RecoveryProps,
+    useSupabaseProps
 } from './types';
 
 export {
@@ -34,5 +35,6 @@ export type {
     SignUpProps,
     SignInProps,
     WelcomeProps,
-    RecoveryProps
+    RecoveryProps,
+    useSupabaseProps
 };

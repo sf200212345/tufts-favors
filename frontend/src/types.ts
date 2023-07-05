@@ -25,6 +25,11 @@ type SignInProps = NativeStackScreenProps<LoginStackParamList, 'SignIn', 'Login'
 type WelcomeProps = NativeStackScreenProps<LoginStackParamList, 'Welcome', 'Login'>;
 type RecoveryProps = NativeStackScreenProps<LoginStackParamList, 'Recovery', 'Login'>;
 
+type useSupabaseProps = {
+    setLoading: ((status: boolean) => void) | null;
+    supabaseFunc: () => any;
+};
+
 export type {
     TabsParamList,
     HomeProps,
@@ -33,5 +38,6 @@ export type {
     SignUpProps,
     SignInProps,
     WelcomeProps,
-    RecoveryProps
+    RecoveryProps,
+    useSupabaseProps
 };
