@@ -12,7 +12,6 @@ export default function SignIn({ navigation }: SignInProps) {
 
     async function signInSupabase() {
         // setCanSubmit(false);
-        console.log('Submit button clicked');
         const { error } = await supabase.auth.signInWithPassword({
             email: email,
             password: password

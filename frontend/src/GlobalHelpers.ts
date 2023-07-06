@@ -37,25 +37,22 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 // session can be accessed using useContext hook
 const GlobalSession = createContext<Session | null>(null);
 
-// making default function for all api calls. The calling function must also be async.
+// making default function for all api calls. The calling function must also be async. See ProfileScreen for an example
 // setLoading is a state set in the calling function, use it to make a loading animation. Can have a value of null if not desired
 // supabaseFunc is the function of the form () => supabase.from('profiles').upsert(updates), for example
 async function useSupabaseDB({ session, setLoading, supabaseFunc }: useSupabaseDBProps) {
     let returnData = null;
     try {
-        console.log('in useSupabase');
         if (setLoading) {
             setLoading(true);
         }
 
         if (!session?.user) throw new Error('No user on the session!');
 
-        console.log('Trying to get data');
         let { data, error, status } = await supabaseFunc();
 
         if (error || status >= 300) throw error;
-        console.log('data received:');
-        console.log(data);
+
         if (data) returnData = data;
     } catch (error) {
         if (error instanceof Error) {

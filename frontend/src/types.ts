@@ -6,8 +6,6 @@ import type { Session } from '@supabase/supabase-js';
 type TabsParamList = {
     Home: undefined; // undefined means no props are passed in
     Profile: undefined;
-    // this needs to be removed eventually when authentication is set up
-    // Login: undefined | { signIn: () => void };
 };
 
 // <TabsParamList, "something", "something" in the form of Tab params type, specific parameter, id of navigator
