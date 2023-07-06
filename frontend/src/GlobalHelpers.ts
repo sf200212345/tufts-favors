@@ -4,8 +4,8 @@ import 'react-native-url-polyfill/auto';
 import { Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { createClient, Session } from '@supabase/supabase-js';
-import { createContext, useContext } from 'react';
-import { useSupabaseProps } from './';
+import { createContext } from 'react';
+import type { useSupabaseDBProps } from './';
 
 // needed by the supabase client to store the JWT auth token locally
 const ExpoSecureStoreAdapter = {
@@ -40,8 +40,7 @@ const GlobalSession = createContext<Session | null>(null);
 // making default function for all api calls. The calling function must also be async.
 // setLoading is a state set in the calling function, use it to make a loading animation. Can have a value of null if not desired
 // supabaseFunc is the function of the form () => supabase.from('profiles').upsert(updates), for example
-async function useSupabase({ setLoading, supabaseFunc }: useSupabaseProps) {
-    const session = useContext(GlobalSession);
+async function useSupabaseDB({ session, setLoading, supabaseFunc }: useSupabaseDBProps) {
     let returnData = null;
     try {
         console.log('in useSupabase');
@@ -70,4 +69,4 @@ async function useSupabase({ setLoading, supabaseFunc }: useSupabaseProps) {
     }
 }
 
-export { supabase, GlobalSession, useSupabase };
+export { supabase, GlobalSession, useSupabaseDB };

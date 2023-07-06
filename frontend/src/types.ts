@@ -1,5 +1,6 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { BottomTabScreenProps, BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import type { Session } from '@supabase/supabase-js';
 
 // defining custom type to validate props passed into screens
 type TabsParamList = {
@@ -25,8 +26,9 @@ type SignInProps = NativeStackScreenProps<LoginStackParamList, 'SignIn', 'Login'
 type WelcomeProps = NativeStackScreenProps<LoginStackParamList, 'Welcome', 'Login'>;
 type RecoveryProps = NativeStackScreenProps<LoginStackParamList, 'Recovery', 'Login'>;
 
-type useSupabaseProps = {
+type useSupabaseDBProps = {
     setLoading: ((status: boolean) => void) | null;
+    session: Session | null;
     supabaseFunc: () => any;
 };
 
@@ -39,5 +41,5 @@ export type {
     SignInProps,
     WelcomeProps,
     RecoveryProps,
-    useSupabaseProps
+    useSupabaseDBProps
 };
