@@ -1,8 +1,7 @@
 import { Text, View } from 'react-native';
 import { useEffect, useContext, useState } from 'react';
-import { GlobalSession, supabase } from '../GlobalHelpers';
+import { GlobalSession, supabase, useSupabaseDB } from '../GlobalHelpers';
 import GlobalStyles from '../GlobalStyles';
-import { useSupabase } from '../GlobalHelpers';
 
 export default function ProfileScreen() {
     const session = useContext(GlobalSession);
@@ -17,18 +16,16 @@ export default function ProfileScreen() {
     }, [session]);
 
     async function getProfile() {
-        console.log('in get profile');
-        let { username, full_name, avatar_url } = await useSupabase({
+        let { username, full_name, avatar_url } = await useSupabaseDB({
+            session,
             setLoading: null,
             supabaseFunc: () =>
                 supabase
                     .from('profiles')
                     .select('username, full_name, avatar_url')
-                    .eq('id', session?.user)
+                    .eq('id', session?.user.id)
                     .single()
         });
-        console.log(username, full_name, avatar_url);
-        console.log('printed received data');
         setUsername(username);
         setFullName(full_name);
         setAvatarUrl(avatar_url);
@@ -37,7 +34,7 @@ export default function ProfileScreen() {
     return (
         <View style={GlobalStyles.container}>
             <Text>profileScreen</Text>
-            {session?.user ? <Text>{session?.user?.email}</Text> : <Text>No User</Text>}
+            {session?.user ? <Text>{session?.user.email}</Text> : <Text>No User</Text>}
             <Text>All the following was received from the API</Text>
             <Text>{username}</Text>
             <Text>{fullName}</Text>

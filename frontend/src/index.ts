@@ -1,3 +1,4 @@
+// used to generate a cleaner interface for imports
 // add only screens and types here to prevent circular import
 import FavorHistoryScreen from './FavorHistoryScreen/FavorHistoryScreen';
 import HomeScreen from './HomeScreen/HomeScreen';
@@ -15,7 +16,7 @@ import type {
     SignInProps,
     WelcomeProps,
     RecoveryProps,
-    useSupabaseProps
+    useSupabaseDBProps
 } from './types';
 
 export {
@@ -36,5 +37,5 @@ export type {
     SignInProps,
     WelcomeProps,
     RecoveryProps,
-    useSupabaseProps
+    useSupabaseDBProps
 };
