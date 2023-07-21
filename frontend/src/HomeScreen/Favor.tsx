@@ -6,6 +6,7 @@ import moment from 'moment';
 
 // eventually move these to types.ts
 enum FavorType {
+    ALL,
     RIDE,
     ACADEMIC,
     FOOD
@@ -40,7 +41,7 @@ moment.updateLocale('en', {
   },
 });
 
-const Favor: React.FC<FavorProps> = (favor: FavorProps) =>{
+const Favor: React.FC<FavorProps> = (favor: FavorProps) => {
     
 
 

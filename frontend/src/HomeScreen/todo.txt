@@ -1,0 +1,19 @@
+Figure out TypeScript stuff
+- Favor props are a bit weird still
+- FavorType enum is also weird (but works)
+- Move everything to global types
+
+Fix styling
+- FavorList is mostly acceptable for now
+- TypeSelector is eh ok
+- Header is also pretty good
+- Need to figure out font
+- Ideally, have main header scroll past and type selector stay sticky at the top
+
+Integrate backend
+- Get favor list
+- Get user info
+
+Things not yet implemented
+- Favor detailed view
+- Navigation
