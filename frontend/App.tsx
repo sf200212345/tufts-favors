@@ -27,23 +27,22 @@ export default function App() {
     }, []);
 
     return (
-        // <NavigationContainer>
-        //     {session && session.user ? (
-        //         <GlobalSession.Provider value={session}>
-        //             <Tabs.Navigator
-        //                 tabBar={(props) => <TabBar {...props} />}
-        //                 id="Tabs"
-        //                 screenOptions={{ headerShown: false }}
-        //                 initialRouteName="Home"
-        //             >
-        //                 <Tabs.Screen name="Home" component={HomeScreen} />
-        //                 <Tabs.Screen name="Profile" component={ProfileScreen} />
-        //             </Tabs.Navigator>
-        //         </GlobalSession.Provider>
-        //     ) : (
-        //         <LoginScreen />
-        //     )}
-        // </NavigationContainer>
-        <HomeScreen />
+        <NavigationContainer>
+            {session && session.user ? (
+                <GlobalSession.Provider value={session}>
+                    <Tabs.Navigator
+                        tabBar={(props) => <TabBar {...props} />}
+                        id="Tabs"
+                        screenOptions={{ headerShown: false }}
+                        initialRouteName="Home"
+                    >
+                        <Tabs.Screen name="Home" component={HomeScreen} />
+                        <Tabs.Screen name="Profile" component={ProfileScreen} />
+                    </Tabs.Navigator>
+                </GlobalSession.Provider>
+            ) : (
+                <LoginScreen />
+            )}
+        </NavigationContainer>
     );
 }
