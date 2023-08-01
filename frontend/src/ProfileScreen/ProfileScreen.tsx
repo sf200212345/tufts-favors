@@ -2,6 +2,7 @@ import { Button, Text, View } from 'react-native';
 import { useEffect, useContext, useState } from 'react';
 import { GlobalSession, supabase, useSupabaseDB } from '../GlobalHelpers';
 import GlobalStyles from '../GlobalStyles';
+import Profile from './Profile';
 
 export default function ProfileScreen() {
     const session = useContext(GlobalSession);

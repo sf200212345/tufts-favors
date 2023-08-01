@@ -4,7 +4,7 @@ import { supabase } from '../GlobalHelpers';
 import HomeStyles from './HomeStyles';
 import Favor from './Favor';
 import TypeSelector from './TypeSelector';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 // eventually move these to types.ts
