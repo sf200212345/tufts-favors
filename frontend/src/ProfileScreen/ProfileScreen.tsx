@@ -38,6 +38,31 @@ export default function ProfileScreen() {
         setAvatarUrl(avatar_url);
     }
 
+    async function createFavor() {
+        let data = await useSupabaseDB({
+            session,
+            setLoading: null,
+            supabaseFunc: () =>
+                supabase.rpc('create_favor', {
+                    num_karma: 300,
+                    f_type: 'food',
+                    title: 'test',
+                    description: 'testing',
+                    f_img_url: ''
+                })
+        });
+        console.log(data);
+    }
+
+    async function test() {
+        let data = await useSupabaseDB({
+            session,
+            setLoading: null,
+            supabaseFunc: () => supabase.rpc('create_test')
+        });
+        console.log(data);
+    }
+
     return (
         <View style={GlobalStyles.container}>
             <Text>profileScreen</Text>
@@ -46,6 +71,8 @@ export default function ProfileScreen() {
             <Text>{fullName}</Text>
             <Text>{avatarUrl}</Text>
             <Button onPress={signOut} title={'Sign Out'} />
+            <Button onPress={createFavor} title={'Create Favor'} />
+            <Button onPress={test} title={'test'} />
         </View>
     );
 }
