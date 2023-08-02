@@ -37,32 +37,32 @@ create policy "Comments are viewable by everyone." on public.comments for select
 create policy "Likes are viewable by everyone." on public.likes for select using (true);
 create policy "Reviews are viewable by everyone" on public.reviews for select using (true);
 
-create policy "User can insert own comment." on public.comments
-  for insert with check (owner_id in (
+create policy "User can insert own comment." on public.comments for insert
+  with check (owner_id in (
     select id from public.profiles where auth.uid() = uid
   ));
-create policy "User can insert own like." on public.likes
-  for insert with check (owner_id in (
+create policy "User can insert own like." on public.likes for insert
+  with check (owner_id in (
     select id from public.profiles where auth.uid() = uid
   ));
-create policy "User can insert own review." on public.reviews
-  for insert with check (owner_id in (
+create policy "User can insert own review." on public.reviews for insert
+  with check (owner_id in (
     select id from public.profiles where auth.uid() = uid
   ));
 
-create policy "User can update own comment." on public.comments
-  for update using (owner_id in (
+create policy "User can update own comment." on public.comments for update
+  using (owner_id in (
     select id from public.profiles where auth.uid() = uid
   ));
 --doesn't make sense to update likes
-create policy "User can update own review." on public.reviews
-  for update using (owner_id in (
+create policy "User can update own review." on public.reviews for update
+  using (owner_id in (
     select id from public.profiles where auth.uid() = uid
   ));
 
 --comments can be 'deleted' through an rpc call because the actual entry cannot be deleted
-create policy "User can delete own like." on public.likes
-  for delete using (owner_id in (
+create policy "User can delete own like." on public.likes for delete
+  using (owner_id in (
     select id from public.profiles where auth.uid() = uid
   ));
 --reviews cannot be deleted

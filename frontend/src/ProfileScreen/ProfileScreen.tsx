@@ -11,9 +11,12 @@ export default function ProfileScreen() {
     // const [username, setUsername] = useState('no username');
     const [fullName, setFullName] = useState('no full name');
     const [avatarUrl, setAvatarUrl] = useState('no avatar url');
+    //const [karma, setKarma] = useState(0);
 
     useEffect(() => {
-        if (session) getProfile();
+        if (session) {
+            getProfile();
+        }
     }, [session]);
 
     async function signOut() {
@@ -54,15 +57,6 @@ export default function ProfileScreen() {
         console.log(data);
     }
 
-    async function test() {
-        let data = await useSupabaseDB({
-            session,
-            setLoading: null,
-            supabaseFunc: () => supabase.rpc('create_test')
-        });
-        console.log(data);
-    }
-
     return (
         <View style={GlobalStyles.container}>
             <Text>profileScreen</Text>
@@ -72,7 +66,6 @@ export default function ProfileScreen() {
             <Text>{avatarUrl}</Text>
             <Button onPress={signOut} title={'Sign Out'} />
             <Button onPress={createFavor} title={'Create Favor'} />
-            <Button onPress={test} title={'test'} />
         </View>
     );
 }

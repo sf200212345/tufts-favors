@@ -54,10 +54,8 @@ async function useSupabaseDB({ session, setLoading, supabaseFunc }: useSupabaseD
         if (error || status >= 300) throw error;
 
         if (data) returnData = data;
-    } catch (error) {
-        if (error instanceof Error) {
-            Alert.alert(error.message);
-        }
+    } catch (error: any) {
+        Alert.alert(error?.message);
     } finally {
         if (setLoading) {
             setLoading(false);

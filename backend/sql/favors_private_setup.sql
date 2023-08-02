@@ -13,8 +13,6 @@ create table private.favors_transactions (
   constraint same_user check (poster_id != completer_id or poster_id = 6)
 );
 
-alter table private.favors_transactions enable row level security;
-
 --all user inputted information for favors
 create table private.favors_user (
   f_id int references private.favors_transactions on delete cascade not null primary key,
@@ -23,13 +21,12 @@ create table private.favors_user (
   title text not null,
   description text not null,
   f_img_url text,
+  edited boolean default false,
 
   constraint zero_karma check (num_karma > 0),
   constraint empty_title check (char_length(title) > 0),
   constraint empty_desc check (char_length(description) > 0)
 );
-
-alter table private.favors_user enable row level security;
 
 --all server-inputted information for favors
 create table private.favors_server (
@@ -40,6 +37,80 @@ create table private.favors_server (
   f_status favor_status not null
 );
 
+--rls policies
+alter table private.favors_transactions enable row level security;
+alter table private.favors_user enable row level security;
 alter table private.favors_server enable row level security;
 
---add dummy data here
+create policy "Transactions are viewable." on private.favors_transactions for select using (true);
+create policy "User info for favors are viewable." on private.favors_user for select using (true);
+create policy "Server info for favors are viewable." on private.favors_server for select using (true);
+
+create policy "User can insert own transaction" on private.favors_transactions for insert
+  with check (poster_id in (
+    select id from public.profiles where auth.uid() = uid
+  ));
+create policy "User can insert own user favor info." on private.favors_user for insert
+  with check (f_id in (
+    select t.f_id from public.profiles as p, private.favors_transactions as t
+    where auth.uid() = p.uid and p.id = t.poster_id
+  ));
+create policy "User can insert own server info" on private.favors_server for insert
+  with check (f_id in (
+    select t.f_id from public.profiles as p, private.favors_transactions as t
+    where auth.uid() = p.uid and p.id = t.poster_id
+  ));
+
+create policy "Completer can update transaction with own id." on private.favors_transactions for update
+  using ((completer_id = 6) or (completer_id in (
+    select id from public.profiles where auth.uid() = uid
+  )))
+  with check ((completer_id = 6) or (completer_id in (
+    select id from public.profiles where auth.uid() = uid
+  )));
+  
+create policy "Poster can update user favor info." on private.favors_user for update
+  using (f_id in (
+    select t.f_id from public.profiles as p, private.favors_transactions as t
+    where auth.uid() = p.uid and p.id = t.poster_id
+  ));
+
+create policy "Poster and completer can update server favor info." on private.favors_server for update
+  using (f_id in (
+    select t.f_id from public.profiles as p, private.favors_transactions as t
+    where auth.uid() = p.uid and (p.id = t.poster_id or p.id = t.completer_id)
+  ));
+
+create policy "User can delete own transaction IF f_status is open" on private.favors_transactions for delete
+  using ((poster_id in (
+    select id from public.profiles where auth.uid() = uid
+  )) and ('open' in (
+    select f_status from private.favors_server as f where f.f_id = f_id 
+  )));
+
+create policy "User can delete own favor user info IF f_status is open" on private.favors_user for delete
+  using ((f_id in (
+    select t.f_id from public.profiles as p, private.favors_transactions as t
+    where auth.uid() = p.uid and (p.id = t.poster_id or p.id = t.completer_id)
+  )) and ('open' in (
+    select f_status from private.favors_server as f where f.f_id = f_id 
+  )));
+
+create policy "User can delete own favor server info IF f_status is open" on private.favors_server for delete
+  using ((f_id in (
+    select t.f_id from public.profiles as p, private.favors_transactions as t
+    where auth.uid() = p.uid and (p.id = t.poster_id or p.id = t.completer_id)
+  )) and ('open' in (
+    select f_status from private.favors_server as f where f.f_id = f_id 
+  )));
+
+
+--grant public access through postgres functions
+--grant access to schema
+grant usage on schema private to public;
+--grant access to tables
+grant select, insert, update(completer_id), delete on private.favors_transactions to public;
+
+grant select, insert, update(completed_at, reviewed_at, f_status), delete on private.favors_server to public;
+
+grant select, insert, update, delete on private.favors_user to public;
