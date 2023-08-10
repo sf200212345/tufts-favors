@@ -1,0 +1,58 @@
+schema public:
+- profile
+    - uid (fk auth)
+    - id
+    - full name
+    - pronouns
+    - about me
+    - avatar_url
+    - updated_at
+    - karma (calculated after every insert, update)
+    - helped (calculated after every update by completer, where status is reviewed)
+    - select allowed only on karma and helped using grant, default amounts when profile is created
+        - use security definer when running triggers that update karma and helped
+- settings table
+    - accepted terms and conditions (timestamp)
+- favors_user
+    - f_id
+    - karma
+    - f_type
+    - title
+    - description
+    - f_img_url
+    - edited
+    - f_id is generated here, following row policies. Trigger karma update on insert, update and delete:
+        - insert: user can insert own favor ONLY IF they have enough karma
+        - update: user can update own favor ONLY IF the amount of karma is less than the amount they have in their account AND favor has yet to be picked up by a completer (look at favor status)
+        - select: any can select
+        - delete: user can only delete if favor has yet to be picked up by a completer
+- comments, likes, reviews
+    - owner_id (fk profile)
+    - f_id (fk favors_user)
+    - other typical fields
+- figure out how messages/live realtime and file storage works
+- favor imgs/avatar imgs
+    - selectable by everyone, update/delete/insert by user only
+
+
+schema private:
+- favors_server
+    - f_id (fk public.favors_user)
+    - poster_id (fk public.profile)
+    - completer_id (fk public.profile)
+    - posted_at, completed_at, reviewed_at
+        - first inserted by server on insert into favors_user, second inserted by server through completer call, third by user
+    - f_status
+        - needs to be updated on every update
+    - do NOT use security definer for functions that interface with this table
+
+functions
+- triggers for insert favor, update favor
+- functions for changing favors_server
+- functions for deleting comments and reviews
+
+views
+- get 10-20 favors for home page
+    - split into favors general and favors detail? make two separate requests for this
+    - favors detail might work better as a client sided request to prevent joining with too much info
+- try to see if view with auth.uid works for personal favor history (ideal)
