@@ -57,6 +57,21 @@ export default function ProfileScreen() {
         console.log(data);
     }
 
+    // example of how to join tables and query by id
+    async function change_helped_karma() {
+        let data = await useSupabaseDB({
+            session,
+            setLoading: null,
+            supabaseFunc: () =>
+                supabase
+                    .from('stats')
+                    .select('karma, helped, profiles!inner(uid)')
+                    .eq('profiles.uid', '375f9651-6312-464f-8765-6d1793efdc3e')
+                    .single()
+        });
+        console.log(data);
+    }
+
     return (
         <View style={GlobalStyles.container}>
             <Text>profileScreen</Text>
@@ -66,6 +81,7 @@ export default function ProfileScreen() {
             <Text>{avatarUrl}</Text>
             <Button onPress={signOut} title={'Sign Out'} />
             <Button onPress={createFavor} title={'Create Favor'} />
+            <Button onPress={change_helped_karma} title={'change helped karma'} />
         </View>
     );
 }

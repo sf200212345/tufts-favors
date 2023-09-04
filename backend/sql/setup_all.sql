@@ -7,11 +7,10 @@ create table profiles (
   about_me text,
   avatar_url text not null,
   updated_at timestamp with time zone not null,
-  karma int default 1000,
-  helped int default 0,
 
   constraint full_name_length check (char_length(full_name) > 0)
 );
+
 -- Set up Row Level Security (RLS)
 -- See https://supabase.com/docs/guides/auth/row-level-security for more details.
 alter table profiles
@@ -20,15 +19,38 @@ alter table profiles
 create policy "Public profiles are viewable by everyone." on profiles
   for select using (true);
 
--- remove edit access to karma and helped
-revoke update on profiles from public;
-grant update(full_name, pronouns, about_me, avatar_url, updated_at) on profiles to public;
-
-create policy "Users can update own profile except karma and helped." on profiles
+create policy "Users can update own profile." on profiles
   for update using (auth.uid() = uid);
 
--- This trigger automatically creates a profile entry when a new user signs up via Supabase Auth.
--- See https://supabase.com/docs/guides/auth/managing-user-data#using-triggers for more details.
+
+-- stats setup
+
+create table stats (
+  id int references public.profiles on delete cascade not null primary key,
+  karma int default 1000,
+  helped int default 0
+);
+
+alter table stats
+  enable row level security;
+
+-- updates can only happen through a security definer function
+create policy "Stats are viewable by everyone." on stats
+  for select using (true);
+
+-- Trigger to create a stats entry when there has been an insert on profiles
+create or replace function public.insert_stats()
+returns trigger as $$
+begin
+  insert into public.stats (id)
+  values (new.id);
+  return new;
+end;
+$$ language plpgsql security definer;
+create trigger on_profile_insert_stats
+  after insert on public.profiles
+  for each row execute procedure public.insert_stats();
+  
 
 --Add existing rows from auth.users
 do
@@ -46,6 +68,8 @@ begin
 end;
 $$;
 
+-- This trigger automatically creates a profile entry when a new user signs up via Supabase Auth.
+-- See https://supabase.com/docs/guides/auth/managing-user-data#using-triggers for more details.
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
@@ -60,6 +84,7 @@ $$ language plpgsql security definer;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
 
 --setup public favors tables, these can be accessed directly by users
 --using id=6 to indicate that a user has been deleted to prevent issues

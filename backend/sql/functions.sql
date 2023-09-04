@@ -27,3 +27,9 @@ $$ language plpgsql;
 
 --make function that calculates how much karma a user has every time inserted/updated/deleted
 --same with one that calculates how many people a user has helped
+
+
+-- functions to be called when operations updating karma and helped have been executed
+create or replace function public.update_karma()
+
+create or replace function public.update_helped()

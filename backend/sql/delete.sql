@@ -21,6 +21,11 @@ drop table if exists public.favors_user;
 drop type if exists favor_type;
 drop type if exists favor_status;
 
+drop trigger if exists on_profile_insert_stats on public.profiles;
+drop function if exists public.insert_stats;
+
+drop table if exists public.stats;
+
 drop trigger if exists on_auth_user_created on auth.users;
 drop function if exists public.handle_new_user;
 
