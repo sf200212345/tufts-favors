@@ -49,7 +49,7 @@ schema private:
 functions
 - triggers for insert favor, update favor
 - functions for changing favors_server
-- functions for deleting comments and reviews
+- functions for deleting comments
 
 views
 - get 10-20 favors for home page
